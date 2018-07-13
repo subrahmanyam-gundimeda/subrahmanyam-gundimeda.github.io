@@ -1,2 +1,55 @@
-<B> This is a trail of adding the content </B>
-<B> Resume</B>
+<B> How to write C++ application using OpenCV in ArchLinux and BeagleboneBlack(BBB) </B>
+    
+The following documenttation explains on how to write a simple C++ application using OpenCV  (>2) library in Linux platform.
+There are two ways we can follow. One is being downloading from opencv website or by cloning it like https://opencv.org/opencv.git  and the otherway is by using the package manager.
+     
+    sudo pacman -S opencv opencv-samples
+
+Lets just write a program to capture the video from a camera device and save it into a file.
+
+#include<iostream>
+#include<opencv2/opencv.hpp>
+//#include<memory>
+using namespace std;
+using namespace cv;
+
+int main(){
+//      unique_ptr<VideoCapture> VideoDevice = make_unique<VideoCapture>(0);
+        VideoCapture *VideoDevice = new VideoCapture(0);
+        VideoWriter VideoFile("output.avi",CV_FOURCC('M','J','p','G'),20,Size(1280,720));
+        cout<<"\n Started Processing- Capturing Image";
+//      VideoDevice->set(CV_CAP_PROP_FRAME_WIDTH,1280);
+//      VideoDevice->set(CV_CAP_PROP_FRAME_HEIGHT,720);
+//      VideoDevice->set(CV_CAP_PROP_GAIN,0);
+        if(!VideoDevice->isOpened()){
+                cout<<"\n Failed to connect to the camera.............";
+        }
+        while( true){
+                Mat frame;
+                *VideoDevice >> frame;
+                if(frame.empty()){
+                        cout<<"\n Failed to capture an image....";
+                        return -1;
+                }
+                VideoFile.write(frame);
+
+                char c=(char)waitKey(25);
+                if (c == 27){
+                        cout<<"\n Esc character is pressed so stopping the video...";
+                        break;
+                }
+        }
+        VideoDevice->release();
+//      VideoFile->release();
+        return 0;
+}
+
+
+Compiling is a little tricky if you have multiple versions of opencv so linking to proper version is critical. Run the following commands
+1.pkg-config --cflags opencv
+  expected output: library paths will be displayed. If you didn't get anything then you need to install the library or link it properly.
+2. g++ <B>--std=c++11</B> 'pkg-config --cflags opencv' filename.cpp -o filename
+
+
+
+
