@@ -1,12 +1,13 @@
+<head>
 <B> How to write C++ application using OpenCV in ArchLinux and BeagleboneBlack(BBB) </B>
-    
+<body>
 The following documenttation explains on how to write a simple C++ application using OpenCV  (>2) library in Linux platform.
 There are two ways we can follow. One is being downloading from opencv website or by cloning it like https://opencv.org/opencv.git  and the otherway is by using the package manager.
      
     sudo pacman -S opencv opencv-samples
 
 Lets just write a program to capture the video from a camera device and save it into a file.
-
+    </body>
 #include<iostream>
 #include<opencv2/opencv.hpp>
 //#include<memory>
@@ -50,6 +51,6 @@ Compiling is a little tricky if you have multiple versions of opencv so linking 
   expected output: library paths will be displayed. If you didn't get anything then you need to install the library or link it properly.
 2. g++ <B>--std=c++11</B> 'pkg-config --cflags opencv' filename.cpp -o filename
 
-
+    </head>
 
 
